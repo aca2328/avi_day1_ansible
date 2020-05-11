@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+     - "vars/creds.yml"
+  vars:
+     - tenant: newproject2020
+     - api_version: 18.2.8
+  roles:
+     - role: avinetworks.avisdk
+  tasks:
+  - avi_virtualservice:
+      controller: "{{ avi_controller}}"
+      username: "{{ avi_username }}"
+      password: "{{ avi_password }}"
+      api_version: "{{ api_version }}"
+      tenant: "{{ tenant }}"
+      name: web1
+      analytics_policy:
+        all_headers: true
+        client_insights: NO_INSIGHTS
+        full_client_logs:
+          duration: 0
+          enabled: true
+          throttle: 10
+        metrics_realtime_update:
+          duration: 0
+          enabled: true
+      tenant_ref: /api/tenant?name={{ tenant }}
+      pool_ref: /api/pool?name=pool_web
+      cloud_ref: /api/cloud?name=vcenter6
+      vip:
+        - ip_address:
+            addr: '10.10.10.10'
+            type: 'V4'
+          vip_id: '1'
+      ssl_key_and_certificate_refs:
+        - '/api/sslkeyandcertificate?name=System-Default-Cert-EC'
+      ssl_profile_ref: '/api/sslprofile?name=System-Standard'
+      application_profile_ref: '/api/applicationprofile?name=System-Secure-HTTP'
+      services:
+        - port: 80
+        - port: 443
+          enable_ssl: true

@@ -1,0 +1,29 @@
+- hosts: localhost
+  connection: local
+  vars_files:
+     - "vars/creds.yml"
+  vars:
+     - tenant: newproject2020
+     - api_version: 18.2.8
+  roles:
+     - role: avinetworks.avisdk
+  tasks:
+   - name: Create or Update Pool
+     avi_pool:
+       controller: "{{ avi_controller}}"
+       username: "{{ avi_username }}"
+       password: "{{ avi_password }}"
+       api_version: "{{ api_version }}"
+       tenant: "{{ tenant }}"
+       name: "pool_web"
+       tenant_ref: /api/tenant?name={{ tenant }}
+       cloud_ref: /api/cloud?name=vcenter6
+       health_monitor_refs:
+        - '/api/healthmonitor?name=System-HTTP'
+       servers:
+        - ip:
+            addr: '10.10.10.1'
+            type: 'V4'
+        - ip:
+            addr: '10.10.10.2'
+            type: 'V4'

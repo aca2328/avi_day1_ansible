@@ -1,0 +1,70 @@
+# Auto-generated from Avi Configuration
+---
+- connection: local
+  hosts: localhost
+  tasks:
+  - avi_pool:
+      analytics_profile_ref: /api/analyticsprofile?name=System-Analytics-Profile
+      api_context: '{{avi_api_context | default(omit)}}'
+      api_version: 18.2.8
+      capacity_estimation: false
+      capacity_estimation_ttfb_thresh: 0
+      cloud_ref: /api/cloud?name=Default-Cloud
+      connection_ramp_duration: 10
+      controller: '{{ controller }}'
+      default_server_port: 80
+      delete_server_on_dns_refresh: true
+      enabled: true
+      fewest_tasks_feedback_delay: 10
+      graceful_disable_timeout: 1
+      health_monitor_refs:
+      - /api/healthmonitor?name=System-HTTP
+      host_check_enabled: false
+      inline_health_monitor: true
+      lb_algorithm: LB_ALGORITHM_LEAST_CONNECTIONS
+      lb_algorithm_core_nonaffinity: 2
+      lb_algorithm_hash: LB_ALGORITHM_CONSISTENT_HASH_SOURCE_IP_ADDRESS
+      lookup_server_by_name: false
+      max_concurrent_connections_per_server: 0
+      name: foo-pool
+      password: '{{ password }}'
+      request_queue_depth: 128
+      request_queue_enabled: false
+      rewrite_host_header_to_server_name: false
+      rewrite_host_header_to_sni: false
+      server_timeout: 0
+      servers:
+      - enabled: true
+        hostname: 10.2.3.4
+        ip:
+          addr: 10.2.3.4
+          type: V4
+        ratio: 1
+        resolve_server_by_dns: false
+        rewrite_host_header: false
+        static: false
+        verify_network: false
+      - enabled: true
+        hostname: 10.1.2.3
+        ip:
+          addr: 10.1.2.3
+          type: V4
+        ratio: 1
+        resolve_server_by_dns: false
+        rewrite_host_header: false
+        static: false
+        verify_network: false
+      sni_enabled: true
+      tenant: admin
+      tenant_ref: /api/tenant?name=admin
+      use_service_port: false
+      username: '{{ username }}'
+      vrf_ref: /api/vrfcontext?name=global
+    name: 'Create or Update Pool: foo-pool'
+    tags:
+    - foo-pool
+    - pool
+  vars:
+    controller: '{{ controller }}'
+    password: '{{ password }}'
+    username: '{{ username }}'

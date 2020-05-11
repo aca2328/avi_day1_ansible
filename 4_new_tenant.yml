@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+     - "vars/creds.yml"
+  vars:
+     - tenant: admin
+     - api_version: 18.2.8
+  roles:
+     - role: avinetworks.avisdk
+  tasks:
+    - name: Create or Update Custom Tenant
+      avi_tenant:
+       controller: "{{ avi_controller}}"
+       username: "{{ avi_username }}"
+       password: "{{ avi_password }}"
+       api_version: "{{ api_version }}"
+       name: newproject2020
